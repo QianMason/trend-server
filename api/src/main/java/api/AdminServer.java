@@ -9,13 +9,18 @@ import org.restlet.representation.* ;
 import org.restlet.ext.json.* ;
 import org.restlet.data.* ;
 
-import java.net.InetAddress;
+import java.net.InetAddress ;
+import java.net.URL ;
 import java.net.UnknownHostException;
+import java.net.HttpURLConnection ;
 import java.util.concurrent.BlockingQueue ;
 import java.util.concurrent.LinkedBlockingQueue ;
 import java.util.concurrent.ConcurrentHashMap ;
 import java.util.concurrent.ConcurrentLinkedQueue ;
 import java.util.Collection ;
+import java.io.IOException ;
+import java.io.BufferedReader ;
+import java.io.InputStreamReader ;
 
 public class AdminServer extends Application {
 
@@ -23,11 +28,11 @@ public class AdminServer extends Application {
     //private static String AWS_HOST;
 
    // Node Sync Queues
-    private static ConcurrentLinkedQueue<SyncRequest> node1_sync_queue ; 
-    private static ConcurrentLinkedQueue<SyncRequest> node2_sync_queue ; 
-    private static ConcurrentLinkedQueue<SyncRequest> node3_sync_queue ; 
+    private static ConcurrentLinkedQueue<SyncRequest> node1_sync_queue ;
+    private static ConcurrentLinkedQueue<SyncRequest> node2_sync_queue ;
+    private static ConcurrentLinkedQueue<SyncRequest> node3_sync_queue ;
     private static ConcurrentLinkedQueue<SyncRequest> node4_sync_queue ;
-    private static ConcurrentLinkedQueue<SyncRequest> node5_sync_queue ; 
+    private static ConcurrentLinkedQueue<SyncRequest> node5_sync_queue ;
 
     // Instance Variables
     private ConcurrentHashMap<String,Node> nodes = new ConcurrentHashMap<String,Node>() ;
@@ -55,25 +60,25 @@ public class AdminServer extends Application {
 
             // start Ping Checks Thread to monitor cluster status
             PingChecks pings = new PingChecks() ;
-            new Thread(pings).start();              
+            new Thread(pings).start();
 
-            node1_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ; 
-            node2_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ; 
-            node3_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ; 
-            node4_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ; 
-            node5_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ; 
+            node1_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ;
+            node2_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ;
+            node3_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ;
+            node4_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ;
+            node5_sync_queue = new ConcurrentLinkedQueue<SyncRequest>() ;
 
             // start Sync Threads to Sync Changes in cluster
             Sync sync1 = new Sync( "10.0.1.183", node1_sync_queue ) ;
-            new Thread(sync1).start() ;             
+            new Thread(sync1).start() ;
             Sync sync2 = new Sync( "10.0.1.252", node2_sync_queue ) ;
-            new Thread(sync2).start() ;              
+            new Thread(sync2).start() ;
             Sync sync3 = new Sync( "10.0.1.235", node3_sync_queue ) ;
-            new Thread(sync3).start() ;              
+            new Thread(sync3).start() ;
             Sync sync4 = new Sync( "10.0.1.42", node4_sync_queue ) ;
-            new Thread(sync4).start() ;              
+            new Thread(sync4).start() ;
             Sync sync5 = new Sync( "10.0.1.7", node5_sync_queue ) ;
-            new Thread(sync5).start() ;  
+            new Thread(sync5).start() ;
 
         } catch ( Exception e ) {
             System.out.println( e ) ;
@@ -88,8 +93,8 @@ public class AdminServer extends Application {
             syncObject.command = command ;
             int my_index = server.nodeIndex( server.getMyHostname() ) ;
             System.out.println(     "Sync Document: Key = " + key + " Command = " + command + " "
-                                    + "[host:" + server.getMyHostname() 
-                                    + " index:" + Integer.toString(my_index) + "]" 
+                                    + "[host:" + server.getMyHostname()
+                                    + " index:" + Integer.toString(my_index) + "]"
                                      ) ;
             switch ( my_index ) {
                 case 1:
@@ -158,9 +163,7 @@ public class AdminServer extends Application {
     public void initConfig() {
         InetAddress ip;
         String hostname;
-        setInstanceURL();
         try {
-
             ip = InetAddress.getLocalHost();
             hostname = ip.getHostName();
             System.out.println("IP address : " + ip);
@@ -169,8 +172,8 @@ public class AdminServer extends Application {
             my_host = hostname.toString() ;
             Node node = new Node() ;
             node.id = my_host ;
-            node.name = AWS_HOST ;
-            nodes.put( my_host, node ) ; 
+            node.name = setInstanceURL() ;
+            nodes.put( my_host, node ) ;
 
         } catch (Exception e) {
             System.out.println( e ) ;
@@ -182,7 +185,7 @@ public class AdminServer extends Application {
     }
 
     public int nodeIndex( String id ) {
-        
+
         Node n = nodes.get( id ) ;
         String name = n.name ;
         int index = 0 ;
@@ -206,8 +209,8 @@ public class AdminServer extends Application {
         node.name = name ;
         node.admin_port = admin_port ;
         node.api_port = api_port ;
-        nodes.put( id, node ) ;     
-        System.out.println( "Register Node: " + id + " as: " + name ) ;     
+        nodes.put( id, node ) ;
+        System.out.println( "Register Node: " + id + " as: " + name ) ;
     }
 
     public Collection<Node> getNodes() {
@@ -231,23 +234,23 @@ public class AdminServer extends Application {
 
     @Override
     public Restlet createInboundRoot() {
-        Router router = new Router(getContext()) ;      
+        Router router = new Router(getContext()) ;
         router.attach( "/", PingResource.class ) ;
-        router.attach( "/node", NodeResource.class ) ;   
+        router.attach( "/node", NodeResource.class ) ;
         router.attach( "/sync", SyncResource.class ) ;
-        router.attach( "/sync/{key}", SyncResource.class ) ;         
+        router.attach( "/sync/{key}", SyncResource.class ) ;
         return router;
     }
 
-    public static void setInstanceURL() throws IOException {
-
+    public static String setInstanceURL() throws IOException {
+        String host = "";
         URL url = new URL("http://169.254.169.254/latest/meta-data/local-hostname");
-        HttpURLConnection conconnection = (HttpURLConnection) url.openConnection();
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setRequestMethod("GET");
-        int responseCode = connnection.getResponseCode();
+        int responseCode = connection.getResponseCode();
         if (responseCode == HttpURLConnection.HTTP_OK) {
-            BufferedREader in = new BufferedReader(new InputStreamReader(
-                    connnection.getInputStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(
+                    connection.getInputStream()));
             String inputLine;
             StringBuffer response = new StringBuffer();
 
@@ -255,11 +258,11 @@ public class AdminServer extends Application {
                 response.append(inputLine);
             }
             in.close();
-            AWS_HOST = response.toString();
+            host = response.toString();
         } else {
-            System.println("get request failed")
+            System.out.println("get request failed");
         }
-
+	return host;
     }
 
 }
