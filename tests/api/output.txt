@@ -1,0 +1,556 @@
+Newman Report
+Collection
+2.3-nosql-node-isolation-recovery
+Time
+Fri Oct 09 2020 12:23:07 GMT-0700 (Pacific Daylight Time)
+Exported with
+Newman v5.2.0
+ 
+ 
+Total
+Failed
+Iterations
+1
+0
+Requests
+16
+0
+Prerequest Scripts
+16
+0
+Test Scripts
+32
+4
+Assertions
+11
+0
+ 
+Total run duration
+972ms
+Total data received
+3.95KB (approx)
+Average response time
+20ms
+ 
+Total Failures
+4
+
+Requests
+Config Check on 8001 to Get Ports
+Method
+GET
+URL
+http://localhost:8001/node
+ 
+ 
+Mean time per request
+55ms
+
+Mean size per request
+473B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Successful Config Check
+1
+0
+Check Partition Resolved on Node #1
+Method
+GET
+URL
+http://localhost:8001/node
+ 
+ 
+Mean time per request
+13ms
+
+Mean size per request
+473B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Successful Config Check
+1
+0
+Check Partition Resolved on Node #2
+Method
+GET
+URL
+http://localhost:8002/node
+ 
+ 
+Mean time per request
+21ms
+
+Mean size per request
+473B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Successful Config Check
+1
+0
+Check Partition Resolved on Node #3
+Method
+GET
+URL
+http://localhost:8003/node
+ 
+ 
+Mean time per request
+21ms
+
+Mean size per request
+473B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Successful Config Check
+1
+0
+Check Partition Resolved on Node #4
+Method
+GET
+URL
+http://localhost:8004/node
+ 
+ 
+Mean time per request
+19ms
+
+Mean size per request
+473B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Successful Config Check
+1
+0
+Check Partition Resolved on Node #5
+Method
+GET
+URL
+http://localhost:8005/node
+ 
+ 
+Mean time per request
+13ms
+
+Mean size per request
+473B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Successful Config Check
+1
+0
+Get Document on Node 1
+Method
+GET
+URL
+http://localhost:9001/api/isolation
+ 
+ 
+Mean time per request
+39ms
+
+Mean size per request
+54B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Status code is 200
+1
+0
+Get Document on Node 2
+Method
+GET
+URL
+http://localhost:9002/api/isolation
+ 
+ 
+Mean time per request
+30ms
+
+Mean size per request
+54B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Status code is 200
+1
+0
+Get Document on Node 3
+Method
+GET
+URL
+http://localhost:9003/api/isolation
+ 
+ 
+Mean time per request
+14ms
+
+Mean size per request
+54B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Status code is 200
+1
+0
+Get Document on Node 4
+Method
+GET
+URL
+http://localhost:9004/api/isolation
+ 
+ 
+Mean time per request
+15ms
+
+Mean size per request
+54B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Status code is 200
+1
+0
+Get Document on Node 5
+Method
+GET
+URL
+http://localhost:9005/api/isolation
+ 
+ 
+Mean time per request
+16ms
+
+Mean size per request
+54B
+
+ 
+
+Total passed tests
+1
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+ 
+Tests
+Name
+Pass count
+Fail count
+Status code is 200
+1
+0
+Get Document vClock from Node 1
+Method
+GET
+URL
+http://localhost:8001/sync/isolation
+ 
+ 
+Mean time per request
+9ms
+
+Mean size per request
+178B
+
+ 
+
+Total passed tests
+0
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+Get Document vClock from Node 2
+Method
+GET
+URL
+http://localhost:8002/sync/isolation
+ 
+ 
+Mean time per request
+18ms
+
+Mean size per request
+190B
+
+ 
+
+Total passed tests
+0
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+Get Document vClock from Node 3
+Method
+GET
+URL
+http://localhost:8003/sync/isolation
+ 
+ 
+Mean time per request
+14ms
+
+Mean size per request
+190B
+
+ 
+
+Total passed tests
+0
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+Get Document vClock from Node 4
+Method
+GET
+URL
+http://localhost:8004/sync/isolation
+ 
+ 
+Mean time per request
+19ms
+
+Mean size per request
+190B
+
+ 
+
+Total passed tests
+0
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+Get Document vClock from Node 5
+Method
+GET
+URL
+http://localhost:8005/sync/isolation
+ 
+ 
+Mean time per request
+9ms
+
+Mean size per request
+190B
+
+ 
+
+Total passed tests
+0
+Total failed tests
+0
+
+ 
+
+Status code
+200
+
+
+Failures
+AssertionError: expected 'Node Isolation Document - Node #1 Update' to contain 'Node Isolation Document - Node #5 Update' 
+ 
+Location
+test-script:5:37
+
+Request
+Get Document on Node 1 
+AssertionError: expected 'Node Isolation Document - Node #2 Update' to contain 'Node Isolation Document - Node #5 Update' 
+ 
+Location
+test-script:5:37
+
+Request
+Get Document on Node 2 
+AssertionError: expected 'Node Isolation Document - Node #3 Update' to contain 'Node Isolation Document - Node #5 Update' 
+ 
+Location
+test-script:5:37
+
+Request
+Get Document on Node 3 
+AssertionError: expected 'Node Isolation Document - Node #4 Update' to contain 'Node Isolation Document - Node #5 Update' 
+ 
+Location
+test-script:5:37
+
+Request
+Get Document on Node 4 
