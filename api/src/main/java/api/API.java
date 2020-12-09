@@ -51,7 +51,7 @@ public class API implements Runnable {
             	record_id = db.store( record ) ;
             	record_key = new String(record_id.toBytes()) ;
             	doc.record = record_key ;
-            	doc.json = "" ;
+            	doc.json = jsonText ;
             	KEYMAP_CACHE.put( doc.key, doc ) ;    
                 System.out.println( "Created Document: " + doc.key ) ;
                 
@@ -231,7 +231,7 @@ public class API implements Runnable {
                         record_id = db.store( record ) ;
                         record_key = new String(record_id.toBytes()) ;
                         doc.record = record_key ;
-                        doc.json = "" ;
+                        doc.json = sync.json ;
                         doc.key = key ;
                         KEYMAP_CACHE.put( key, doc ) ;
                         System.out.println( "SYNC: Created Document Key: " + key
@@ -277,6 +277,7 @@ public class API implements Runnable {
                     if (should_sync) {
                         record_key = doc.record ;
                         record_id = db.getOID( record_key.getBytes() ) ;
+                        jsonText = value ;
                         jsonText = value ;
                         try {
                             // store json to db
@@ -440,6 +441,7 @@ public class API implements Runnable {
             AdminServer server = AdminServer.getInstance() ;
             String my_host = server.getMyHostname() ;
             doc.vclock[0] = my_host ;
+            doc.json = value ;
             int my_index = server.nodeIndex( my_host ) ;
             String old_version = doc.vclock[my_index] ;
             String[] splits = old_version.split(":") ;
