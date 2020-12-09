@@ -255,6 +255,7 @@ public class API implements Runnable {
                                 record = new SM.Record( size ) ;
                                 record.setBytes( jsonText.getBytes() ) ;
                                 update_id = db.update( record_id, record ) ;
+                                KEYMAP_CACHE.put( key, doc ) ;
                                 System.out.println( "Document Updated: " + key ) ;
                             } catch (SM.NotFoundException nfe) {
                                 throw new DocumentException( "Document Not Found: " + key ) ;
@@ -285,6 +286,7 @@ public class API implements Runnable {
                             record.setBytes( jsonText.getBytes() ) ;
                             update_id = db.update( record_id, record ) ;
                             doc.json = value ;
+                            KEYMAP_CACHE.put( key, doc ) ;
                             System.out.println( "Document Updated: " + key ) ;
                         } catch (SM.NotFoundException nfe) {
                             throw new DocumentException( "Document Not Found: " + key ) ;
