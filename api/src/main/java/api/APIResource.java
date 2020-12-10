@@ -39,7 +39,7 @@ public class APIResource extends ServerResource {
             // HashMap Document
             Document doc = new Document() ;
             doc.key = doc_key ;
-            doc.json = "" ; // don't store in cache
+            doc.json = doc_json ; // don't store in cache
             doc.message = "Document Queued for Storage." ;
             // Store to DB
             try {
